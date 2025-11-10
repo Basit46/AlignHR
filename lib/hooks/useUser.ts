@@ -12,6 +12,7 @@ export const useUser = () => {
       return res.data.user;
     },
     enabled: !!token,
+    retry: 2,
   });
 
   const user = data;

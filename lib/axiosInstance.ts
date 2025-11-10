@@ -28,10 +28,14 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
-      window.location.href = "/auth/login";
+    if (
+      error.response?.status === 401 &&
+      !window.location.pathname.startsWith("/auth")
+    ) {
       Cookie.remove(TOKEN);
+      window.location.href = "/auth/login";
     }
+
     return Promise.reject(error);
   }
 );
