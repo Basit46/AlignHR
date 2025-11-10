@@ -16,18 +16,23 @@ import {
 } from "@/components/ui/tooltip";
 
 const AttendanceChart = () => {
+  const [mounted, setMounted] = useState(false);
   const [month, setMonth] = useState("january");
   const [daysInMonth, setDaysInMonth] = useState(31);
+  const [colorIndexes, setColorIndexes] = useState<number[]>([]);
 
-  // Set current month on mount
+  // Mark component as mounted
   useEffect(() => {
+    setMounted(true);
+
+    // Set current month
     const currentMonth = new Date()
       .toLocaleString("default", { month: "long" })
       .toLowerCase();
     setMonth(currentMonth);
   }, []);
 
-  // Function to get number of days in month (with leap year handling)
+  // Function to get number of days in a month
   const getDaysInMonth = (month: string, year: number) => {
     const monthIndex = new Date(`${month} 1, ${year}`).getMonth();
     return new Date(year, monthIndex + 1, 0).getDate();
@@ -36,7 +41,13 @@ const AttendanceChart = () => {
   // Update days when month changes
   useEffect(() => {
     const year = new Date().getFullYear();
-    setDaysInMonth(getDaysInMonth(month, year));
+    const days = getDaysInMonth(month, year);
+    setDaysInMonth(days);
+
+    // Precompute random color indexes for each day
+    setColorIndexes(
+      Array.from({ length: days }, () => Math.floor(Math.random() * 4))
+    );
   }, [month]);
 
   // Generate days and weekdays
@@ -50,6 +61,15 @@ const AttendanceChart = () => {
       return { day: i + 1, weekday };
     });
   }, [daysInMonth, month]);
+
+  if (!mounted) return null; // Avoid server/client mismatch
+
+  const notificationColors = [
+    "bg-gray-300",
+    "bg-pry/30",
+    "bg-pry/60",
+    "bg-pry",
+  ];
 
   return (
     <div className="w-full h-full p-4 flex flex-col justify-between gap-4">
@@ -99,19 +119,14 @@ const AttendanceChart = () => {
       {/* Attendance grid */}
       <div className="flex-1 w-full">
         <div className="h-fit w-full grid grid-cols-7 gap-2">
-          {days.map(({ day, weekday }) => {
-            const randomNo = Math.floor(Math.random() * 4);
+          {days.map(({ day, weekday }, i) => {
+            const colorClass = notificationColors[colorIndexes[i]];
 
             return (
               <Tooltip key={day}>
                 <TooltipTrigger asChild>
                   <div
-                    className={` 
-                      ${randomNo == 0 ? "bg-gray-300" : ""} 
-                      ${randomNo == 1 ? "bg-pry/30" : ""} 
-                      ${randomNo == 2 ? "bg-pry/60" : ""} 
-                      ${randomNo == 3 ? "bg-pry" : ""} 
-                      w-full h-[48px] rounded-[8px]`}
+                    className={`${colorClass} w-full h-[48px] rounded-[8px]`}
                   />
                 </TooltipTrigger>
                 <TooltipContent>
