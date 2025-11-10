@@ -11,6 +11,7 @@ export const useUser = () => {
       const res = await axiosInstance.get("/auth/me");
       return res.data.user;
     },
+    enabled: !!token,
   });
 
   const user = data;
