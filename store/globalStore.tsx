@@ -6,6 +6,8 @@ type GlobalStoreType = {
 
   isDeleteEmployeeOpen: boolean;
   setIsDeleteEmployeeOpen: (v: boolean) => void;
+  employeeToDelId: { id: string; name: string };
+  setEmployeeToDelId: (v: { id: string; name: string }) => void;
 
   isUpdatePayrollOpen: boolean;
   setIsUpdatePayrollOpen: (v: boolean) => void;
@@ -20,6 +22,8 @@ export const useGlobalStore = create<GlobalStoreType>((set) => ({
 
   isDeleteEmployeeOpen: false,
   setIsDeleteEmployeeOpen: (v) => set(() => ({ isDeleteEmployeeOpen: v })),
+  employeeToDelId: { id: "", name: "" },
+  setEmployeeToDelId: (v) => set(() => ({ employeeToDelId: v })),
 
   isUpdatePayrollOpen: false,
   setIsUpdatePayrollOpen: (v) => set(() => ({ isUpdatePayrollOpen: v })),

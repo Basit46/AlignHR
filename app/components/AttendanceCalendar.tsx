@@ -54,6 +54,24 @@ const attendanceEvents = [
     end: new Date(2025, 10, 8),
     level: "non-work",
   },
+  {
+    title: "0% attendance",
+    start: new Date(2025, 10, 9),
+    end: new Date(2025, 10, 9),
+    level: "non-work",
+  },
+  {
+    title: "90% attendance",
+    start: new Date(2025, 10, 10),
+    end: new Date(2025, 10, 10),
+    level: "high",
+  },
+  {
+    title: "90% attendance",
+    start: new Date(2025, 10, 11),
+    end: new Date(2025, 10, 11),
+    level: "high",
+  },
 ];
 
 const eventPropGetter = (event: any) => {

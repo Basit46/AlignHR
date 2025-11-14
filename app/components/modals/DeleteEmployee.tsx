@@ -12,9 +12,28 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useGlobalStore } from "@/store/globalStore";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import axiosInstance from "@/lib/axiosInstance";
 
 const DeleteEmployee = () => {
-  const { isDeleteEmployeeOpen, setIsDeleteEmployeeOpen } = useGlobalStore();
+  const queryClient = useQueryClient();
+  const { isDeleteEmployeeOpen, setIsDeleteEmployeeOpen, employeeToDelId } =
+    useGlobalStore();
+
+  //Delete employee
+  const { mutate, isPending } = useMutation({
+    mutationFn: async () => {
+      const res = await axiosInstance.delete(
+        `/employees/${employeeToDelId.id}`
+      );
+      return res.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["employees"] });
+      setIsDeleteEmployeeOpen(false);
+      alert("Employee deleted successfully");
+    },
+  });
 
   return (
     <Dialog open={isDeleteEmployeeOpen} onOpenChange={setIsDeleteEmployeeOpen}>
@@ -31,8 +50,9 @@ const DeleteEmployee = () => {
 
         <div className="mt-2">
           <p className="text-gray-800 text-sm leading-relaxed">
-            This employee will be permanently removed from your organisation.
-            Are you sure you want to continue?
+            <span className="font-semibold">{employeeToDelId.name}</span> will
+            be permanently removed from your organisation. Are you sure you want
+            to continue?
           </p>
         </div>
 
@@ -41,9 +61,13 @@ const DeleteEmployee = () => {
             <Button variant="outline">Cancel</Button>
           </DialogClose>
 
-          <DialogClose asChild>
-            <Button variant="destructive">Delete Employee</Button>
-          </DialogClose>
+          <Button
+            onClick={() => mutate()}
+            loading={isPending}
+            variant="destructive"
+          >
+            Delete Employee
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

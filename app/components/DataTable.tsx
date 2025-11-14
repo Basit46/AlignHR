@@ -16,7 +16,7 @@ import {
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  handleRowClick: (v: string) => void;
+  handleRowClick: (v: any) => void;
   placeholder?: string;
 }
 
@@ -66,9 +66,7 @@ export default function DataTable<TData, TValue>({
                 key={row.id}
                 data-state={row.getIsSelected() && "selected"}
                 className="cursor-pointer"
-                onClick={() =>
-                  handleRowClick((row.original as { id: string }).id)
-                }
+                onClick={() => handleRowClick(row.original)}
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell

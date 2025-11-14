@@ -1,6 +1,10 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import axiosInstance from "@/lib/axiosInstance";
+import { EmployeeType } from "@/types";
+import { calculateAge, formatDateWithSuffix } from "@/utils";
+import { useQuery } from "@tanstack/react-query";
 import { LucideChevronLeft, LucideFile } from "lucide-react";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
@@ -9,6 +13,14 @@ import React from "react";
 const EmployeeDetailsLayout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
   const { id } = useParams();
+
+  const { data: employee = {} } = useQuery<EmployeeType>({
+    queryKey: ["employees", id],
+    queryFn: async () => {
+      const res = await axiosInstance.get(`/employees/${id}`);
+      return res.data.employee;
+    },
+  });
 
   return (
     <div className="w-full h-ft px-[var(--main-px)] py-[20px] flex flex-col gap-5">
@@ -54,25 +66,36 @@ const EmployeeDetailsLayout = ({ children }: { children: React.ReactNode }) => {
               />
             </div>
             <div className="mt-1 flex items-center gap-1">
-              <h1 className="text-[20px] font-gray-900 font-medium leading-[1.2]">
-                Marlo Stanfield
+              <h1 className="text-[20px] font-gray-900 font-medium leading-[1.2] capitalize">
+                {employee?.name}
               </h1>
             </div>
-            <p className="text-sm text-gray-800">Customer Support</p>
+            <p className="text-sm text-gray-800">{employee?.role}</p>
 
             <div className="mt-[20px] w-full flex flex-col gap-2">
-              <DetailsView title="Email" value="marlostanfield@gmail.com" />
-              <DetailsView title="Phone number" value="+23412324385" />
-              <DetailsView title="Age" value="32" />
-              <DetailsView title="Nationality" value="Nigerian" />
+              <DetailsView title="Email" value={employee?.email} />
+              <DetailsView title="Phone number" value={employee?.phoneNum} />
               <DetailsView
-                title="Address"
-                value="Alausa, Ikeja, Lagos, Nigeria"
+                title="Age"
+                value={calculateAge(employee?.dateOfBirth)}
               />
-              <DetailsView title="Gender" value="Male" />
-              <DetailsView title="Contract type" value="Permanent" />
+              <DetailsView
+                title="Nationality"
+                capitalize
+                value={employee?.nationality}
+              />
+              <DetailsView title="Address" value={employee?.address} />
+              <DetailsView title="Gender" capitalize value={employee?.gender} />
+              <DetailsView
+                title="Contract type"
+                capitalize
+                value={employee?.contractType}
+              />
               <DetailsView title="Tax ID" value="7067668092" />
-              <DetailsView title="Date Joined" value="November 2nd, 2024" />
+              <DetailsView
+                title="Date Joined"
+                value={formatDateWithSuffix(employee.dateJoined)}
+              />
             </div>
 
             <Button className="absolute top-[70px] right-[20px]">
@@ -91,11 +114,25 @@ const EmployeeDetailsLayout = ({ children }: { children: React.ReactNode }) => {
 
 export default EmployeeDetailsLayout;
 
-const DetailsView = ({ title, value }: { title: string; value: string }) => {
+const DetailsView = ({
+  title,
+  value,
+  capitalize,
+}: {
+  title: string;
+  value?: string | number;
+  capitalize?: boolean;
+}) => {
   return (
     <div>
       <p className="text-xs text-gray-600">{title}</p>
-      <p className="font-medium text-sm leading-[1.2]">{value}</p>
+      <p
+        className={`${
+          capitalize ? "capitalize" : ""
+        } font-medium text-sm leading-[1.2]`}
+      >
+        {value || "-"}
+      </p>
     </div>
   );
 };

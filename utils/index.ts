@@ -1,5 +1,5 @@
-export const formatDateWithSuffix = (dateString: string) => {
-  const date = new Date(dateString);
+export const formatDateWithSuffix = (dateString: string | Date | undefined) => {
+  const date = new Date(dateString || "");
 
   const day = date.getDate();
   const month = date.toLocaleString("default", { month: "short" }); // Nov
@@ -38,4 +38,24 @@ export function getRelativeTime(date: string | Date): string {
   if (weeks < 5) return `${weeks}w ago`;
   if (months < 12) return `${months}mo ago`;
   return `${years}y ago`;
+}
+
+export function calculateAge(dob: string | undefined): number | string {
+  if (!dob) {
+    return "-";
+  }
+  const birthDate = new Date(dob);
+  const today = new Date();
+
+  let age = today.getFullYear() - birthDate.getFullYear();
+  const monthDiff = today.getMonth() - birthDate.getMonth();
+
+  if (
+    monthDiff < 0 ||
+    (monthDiff === 0 && today.getDate() < birthDate.getDate())
+  ) {
+    age--;
+  }
+
+  return age;
 }
