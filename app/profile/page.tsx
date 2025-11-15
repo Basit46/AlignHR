@@ -103,7 +103,7 @@ const Profile = () => {
               <Input
                 className="w-[70%]"
                 id="fullName"
-                value={profile.fullName || ""}
+                value={profile?.fullName || ""}
                 onChange={(e) =>
                   setProfile({ ...profile, fullName: e.target.value })
                 }
@@ -115,7 +115,7 @@ const Profile = () => {
                 className="w-[70%]"
                 id="email"
                 type="mail"
-                value={profile.email || ""}
+                value={profile?.email || ""}
                 onChange={(e) =>
                   setProfile({ ...profile, email: e.target.value })
                 }
@@ -126,7 +126,7 @@ const Profile = () => {
               <Input
                 className="w-[70%]"
                 id="orgName"
-                value={profile.orgName || ""}
+                value={profile?.orgName || ""}
                 onChange={(e) =>
                   setProfile({ ...profile, orgName: e.target.value })
                 }
