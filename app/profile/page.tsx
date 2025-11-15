@@ -66,9 +66,7 @@ const Profile = () => {
 
       <div
         className={`${
-          isLoading
-            ? "opacity-0 translate-y-[50px]"
-            : "opacity-100 translate-y-0 duration-300"
+          isLoading ? "opacity-0" : "opacity-100 duration-300"
         } relative z-[2] h-fit w-[450px] rounded-[16px] overflow-hidden border-[8px] border-white bg-white`}
       >
         <div className="h-[100px] w-full relative overflow-hidden rounded-b-[16px]">
@@ -105,7 +103,7 @@ const Profile = () => {
               <Input
                 className="w-[70%]"
                 id="fullName"
-                value={profile?.fullName}
+                value={profile.fullName || ""}
                 onChange={(e) =>
                   setProfile({ ...profile, fullName: e.target.value })
                 }
@@ -117,7 +115,7 @@ const Profile = () => {
                 className="w-[70%]"
                 id="email"
                 type="mail"
-                value={profile?.email}
+                value={profile.email || ""}
                 onChange={(e) =>
                   setProfile({ ...profile, email: e.target.value })
                 }
@@ -128,7 +126,7 @@ const Profile = () => {
               <Input
                 className="w-[70%]"
                 id="orgName"
-                value={profile?.orgName}
+                value={profile.orgName || ""}
                 onChange={(e) =>
                   setProfile({ ...profile, orgName: e.target.value })
                 }

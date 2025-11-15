@@ -1,3 +1,4 @@
+import { EmployeeType } from "@/types";
 import { create } from "zustand";
 
 type GlobalStoreType = {
@@ -14,6 +15,9 @@ type GlobalStoreType = {
 
   isNotificationsOpen: boolean;
   setIsNotificationsOpen: (v: boolean) => void;
+
+  employeePaymentDetails: EmployeeType;
+  setEmployeePaymentDetails: (v: EmployeeType) => void;
 };
 
 export const useGlobalStore = create<GlobalStoreType>((set) => ({
@@ -30,4 +34,7 @@ export const useGlobalStore = create<GlobalStoreType>((set) => ({
 
   isNotificationsOpen: false,
   setIsNotificationsOpen: (v) => set(() => ({ isNotificationsOpen: v })),
+
+  employeePaymentDetails: {},
+  setEmployeePaymentDetails: (v) => set(() => ({ employeePaymentDetails: v })),
 }));

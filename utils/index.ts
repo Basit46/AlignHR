@@ -59,3 +59,68 @@ export function calculateAge(dob: string | undefined): number | string {
 
   return age;
 }
+
+type TaxResult = {
+  taxAmount: number;
+  taxPercent: number;
+};
+
+export function calculateNigeriaPAYE(monthlyIncome: number): TaxResult {
+  if (monthlyIncome <= 0) {
+    return { taxAmount: 0, taxPercent: 0 };
+  }
+
+  const annualIncome = monthlyIncome * 12;
+
+  let remaining = annualIncome;
+  let annualTax = 0;
+
+  // Progressive annual tax brackets
+  const brackets = [
+    { cap: 800_000, rate: 0 },
+    { cap: 3_000_000, rate: 0.15 },
+    { cap: 12_000_000, rate: 0.18 },
+    { cap: 25_000_000, rate: 0.21 },
+    { cap: 50_000_000, rate: 0.23 },
+    { cap: Infinity, rate: 0.25 },
+  ];
+
+  let lowerBound = 0;
+
+  for (const bracket of brackets) {
+    const { cap, rate } = bracket;
+
+    if (annualIncome > lowerBound) {
+      const taxable = Math.min(remaining, cap - lowerBound);
+      annualTax += taxable * rate;
+      remaining -= taxable;
+    }
+
+    lowerBound = cap;
+    if (remaining <= 0) break;
+  }
+
+  // Convert back to monthly
+  const monthlyTax = annualTax / 12;
+
+  const taxPercent = (monthlyTax / monthlyIncome) * 100;
+
+  return {
+    taxAmount: Number(monthlyTax.toFixed(2)),
+    taxPercent: Number(taxPercent.toFixed(2)),
+  };
+}
+
+export const formatAmount = (amount: number) => {
+  if (amount < 1000) return amount.toString();
+
+  if (amount < 1_000_000) {
+    return (amount / 1000).toFixed(1).replace(/\.0$/, "") + "k";
+  }
+
+  if (amount < 1_000_000_000) {
+    return (amount / 1_000_000).toFixed(1).replace(/\.0$/, "") + "m";
+  }
+
+  return (amount / 1_000_000_000).toFixed(2).replace(/\.00$/, "") + "b";
+};

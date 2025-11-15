@@ -14,6 +14,9 @@ type SingleEmployee = {
   isOnLeave: boolean;
   basePay: number;
   addOns: number;
+  taxId: string;
+  bankName: string;
+  accountNo: string;
   attendance: "present" | "absent" | "n/a";
   dateJoined: Date;
 };
@@ -36,13 +39,19 @@ const singleEmployeeSchema = new mongoose.Schema(
     department: { type: String, default: "" },
     contractType: { type: String, default: "" },
     isOnLeave: { type: Boolean, default: false },
+
     basePay: { type: Number, default: 0 },
     addOns: { type: Number, default: 0 },
+    taxId: { type: String, default: "" },
+    bankName: { type: String, default: "" },
+    accountNo: { type: String, default: "" },
+
     attendance: {
       type: String,
       enum: ["present", "absent", "n/a"],
       default: "n/a",
     },
+
     dateJoined: { type: Date, default: Date.now },
   },
   { timestamps: true }

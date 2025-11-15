@@ -1,7 +1,21 @@
+"Use client";
+
+import axiosInstance from "@/lib/axiosInstance";
+import { formatAmount } from "@/utils";
+import { useQuery } from "@tanstack/react-query";
 import { LucideArrowUpRight, LucideWalletCards } from "lucide-react";
 import React from "react";
 
 const PayrollOverview = () => {
+  //Get overview of employees
+  const { data: overview } = useQuery({
+    queryKey: ["overview", "payroll-view"],
+    queryFn: async () => {
+      const res = await axiosInstance.get("/dashboard/overview");
+      return res.data.payroll;
+    },
+  });
+
   return (
     <div className="w-full h-full p-4 flex flex-col justify-between">
       <div className="flex w-full items-center gap-2">
@@ -13,7 +27,7 @@ const PayrollOverview = () => {
 
       <div>
         <h1 className="text-[60px] text-gray-900 font-[450] leading-[1.2]">
-          ₦200m
+          ₦{formatAmount(overview?.number || 0)}
         </h1>
 
         <div className="flex justify-between">

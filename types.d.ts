@@ -8,6 +8,7 @@ export type NotificationType = {
 };
 
 export type EmployeeType = {
+  _id?: string;
   name?: string;
   email?: string;
   phoneNum?: string;
@@ -21,6 +22,9 @@ export type EmployeeType = {
   isOnLeave?: boolean;
   basePay?: number;
   addOns?: number;
+  taxId?: string;
+  bankName?: string;
+  accountNo?: any;
   attendance?: "present" | "absent" | "n/a";
   dateJoined?: Date;
 };

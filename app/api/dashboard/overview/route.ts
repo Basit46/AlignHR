@@ -62,6 +62,13 @@ export async function GET(req: NextRequest) {
       (employeesOnLeave.length / employees.length) * 100;
     const leaveTrend = leavePercentChange >= 0 ? "up" : "down";
 
+    //Payroll
+    const totalPayrollAmount =
+      employees.reduce(
+        (acc: number, e: any) => acc + (e.basePay || 0) + (e.addOns || 0),
+        0
+      ) || 0;
+
     return NextResponse.json(
       {
         employees: {
@@ -69,10 +76,15 @@ export async function GET(req: NextRequest) {
           percentChange: percentChange.toFixed(0),
           trend,
         },
+
         leaves: {
           number: employeesOnLeave.length,
           leavePercentChange: leavePercentChange.toFixed(0),
           leaveTrend,
+        },
+
+        payroll: {
+          number: totalPayrollAmount,
         },
       },
       { status: 200 }

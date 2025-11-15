@@ -1,5 +1,7 @@
 "use client";
 
+import axiosInstance from "@/lib/axiosInstance";
+import { useQuery } from "@tanstack/react-query";
 import { Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
 
 const data = [
@@ -9,6 +11,15 @@ const data = [
 ];
 
 const ContractOverview = () => {
+  //Get contract types of employees
+  const { data } = useQuery({
+    queryKey: ["overview", "contractChart"],
+    queryFn: async () => {
+      const res = await axiosInstance.get("/dashboard/contract-chart");
+      return res.data.chart;
+    },
+  });
+
   return (
     <div className="w-full h-full p-4 flex flex-col justify-between gap-4">
       <div>
@@ -38,7 +49,7 @@ const ContractOverview = () => {
       <div className="flex justify-between items-center">
         <div className="flex gap-1 items-center">
           <div className="size-3 rounded-full bg-pry" />
-          <p className="text-xs text-gray-700">Fulltime (70%)</p>
+          <p className="text-xs text-gray-700">Permanent (70%)</p>
         </div>
 
         <div className="flex gap-1 items-center">
@@ -66,7 +77,7 @@ const CustomTooltip = ({ active, payload }: any) => {
         <div className="flex items-center gap-[8px]">
           <span style={{ color: data.fill }}>•</span>
           <p className="text-[14px] font-medium text-gray-800">
-            {data.name} - {data.value}%
+            {data.name} - {data.value} employee{data.value > 1 && "s"}
           </p>
         </div>
       </div>
