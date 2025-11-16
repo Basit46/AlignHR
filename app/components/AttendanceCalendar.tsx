@@ -40,7 +40,7 @@ const AttendanceCalendar = () => {
       const res = await axiosInstance.get("/attendance");
       const record = res.data.attendanceRecords
         ? res.data.attendanceRecords.map((r: any) => ({
-            title: `${r?.value || 0}% attendance`,
+            title: `${r?.value?.toFixed(0) || 0}% attendance`,
             start: new Date(r?.date),
             end: new Date(r?.date),
             level: r.value > 70 ? "high" : r.value > 60 ? "medium" : "low",
