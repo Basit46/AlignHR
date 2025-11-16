@@ -1,7 +1,7 @@
 "use client";
 
-import React from "react";
-import { Calendar, Views } from "react-big-calendar";
+import React, { useState } from "react";
+import { Calendar, Views, NavigateAction } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { localizer } from "@/lib/calendarLocalizer";
 import { useQuery } from "@tanstack/react-query";
@@ -33,6 +33,8 @@ const CustomEvent = ({ event }: any) => (
 );
 
 const AttendanceCalendar = () => {
+  const [currentDate, setCurrentDate] = useState(new Date());
+
   //GET Employees attendance record
   const { data = [] } = useQuery({
     queryKey: ["attendance"],
@@ -62,11 +64,9 @@ const AttendanceCalendar = () => {
       switch (hasEvent.level) {
         case "high":
           backgroundColor = "rgb(0 98 255 / 0.5)";
-
           break;
         case "medium":
           backgroundColor = "rgb(0 98 255 / 0.3)";
-
           break;
         case "low":
           backgroundColor = "rgb(0 98 255 / 0.1)";
@@ -85,6 +85,10 @@ const AttendanceCalendar = () => {
     return {};
   };
 
+  const handleNavigate = (newDate: Date) => {
+    setCurrentDate(newDate);
+  };
+
   return (
     <div className="w-full h-[700px] bg-white rounded-xl p-4">
       <Calendar
@@ -94,7 +98,8 @@ const AttendanceCalendar = () => {
         endAccessor="end"
         views={[Views.MONTH]}
         defaultView={Views.MONTH}
-        defaultDate={new Date()}
+        date={currentDate}
+        onNavigate={handleNavigate}
         eventPropGetter={eventPropGetter}
         dayPropGetter={dayPropGetter}
         components={{ event: CustomEvent }}
