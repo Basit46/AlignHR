@@ -1,13 +1,29 @@
 "use client";
 
 import { Skeleton } from "@/components/ui/skeleton";
+import axiosInstance from "@/lib/axiosInstance";
+import { useQuery } from "@tanstack/react-query";
+import Markdown from "react-markdown";
 
 const AIinsight = () => {
-  //   if (isLoading) {
-  //   return <Skeleton className="w-full h-full" />;
-  // }
+  //Get AI summary
+  const { data, isLoading } = useQuery({
+    queryKey: ["summary"],
+    queryFn: async () => {
+      const res = await axiosInstance.get("/ai");
+      return res.data.summary;
+    },
+    staleTime: 1000 * 60 * 60,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+  });
+
+  if (isLoading) {
+    return <Skeleton className="w-full h-full" />;
+  }
+
   return (
-    <div className="w-full h-full p-4 flex flex-col justify-between gap-4">
+    <div className="w-full h-full p-4 flex flex-col justify-between gap-3">
       <div>
         <h1 className="text-[20px] font-medium leading-[1.2]">AI Insight</h1>
         <p className="text-gray-600 text-sm">
@@ -16,17 +32,8 @@ const AIinsight = () => {
       </div>
 
       <div className="scrollbar-hide flex-1 w-full overflow-y-auto">
-        <div className="h-fit w-full">
-          <p className="text-sm text-gray-700">
-            Over the past quarter, the workforce has shown a notable shift
-            toward permanent employment, with a 10% increase compared to the
-            previous cycle. Contract roles, while still vital for flexibility,
-            have seen a gradual decline as departments focus on long-term
-            stability. Engineering and Operations departments lead this
-            transition, accounting for nearly half of all new permanent hires.
-            Meanwhile, intern positions remain steady, reflecting consistent
-            investment in talent development and onboarding programs.
-          </p>
+        <div className="h-fit w-full text-sm text-gray-700 space-y-1">
+          <Markdown>{data}</Markdown>
         </div>
       </div>
     </div>
