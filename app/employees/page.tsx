@@ -12,7 +12,7 @@ import React, { useMemo, useState } from "react";
 import DataTable from "../components/DataTable";
 import { useRouter } from "next/navigation";
 import { ColumnDef } from "@tanstack/react-table";
-import { formatDateWithSuffix } from "@/utils";
+import { exportJSONToExcel, formatDateWithSuffix } from "@/utils";
 import CustomSelect from "../components/custom/CustomSelect";
 import { departments, employeeTypes } from "@/constants";
 import CustomSearch from "../components/custom/CustomSearch";
@@ -36,7 +36,7 @@ const Employees = () => {
   const [contractFilter, setContractFilter] = useState("all");
 
   //GET Employees
-  const { data: employees = [] } = useQuery({
+  const { data: employees = [], isLoading } = useQuery({
     queryKey: ["employees"],
     queryFn: async () => {
       const res = await axiosInstance.get("/employees");
@@ -113,7 +113,11 @@ const Employees = () => {
       accessorKey: "attendance",
       header: "Attendance",
       cell: ({ row }) => {
-        return <span className="text-gray-700">{row.original.attendance}</span>;
+        return (
+          <span className="text-gray-700 capitalize">
+            {row.original.attendance}
+          </span>
+        );
       },
     },
 
@@ -147,7 +151,7 @@ const Employees = () => {
         >
           <Tooltip>
             <TooltipTrigger asChild>
-              <button onClick={() => handleRowClick(row.original._id)}>
+              <button onClick={() => handleRowClick(row.original)}>
                 <LucideEye className="text-pry" />
               </button>
             </TooltipTrigger>
@@ -215,7 +219,10 @@ const Employees = () => {
         </div>
 
         <div className="flex gap-2 items-center">
-          <Button variant={"outline"}>
+          <Button
+            onClick={() => exportJSONToExcel(employees, "Employees")}
+            variant={"outline"}
+          >
             <LucideFileSpreadsheet />
             Export
           </Button>
@@ -259,6 +266,7 @@ const Employees = () => {
             columns={columns}
             handleRowClick={handleRowClick}
             placeholder="No employee found"
+            isLoading={isLoading}
           />
         </div>
       </div>

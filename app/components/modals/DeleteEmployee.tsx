@@ -14,6 +14,7 @@ import {
 import { useGlobalStore } from "@/store/globalStore";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axiosInstance from "@/lib/axiosInstance";
+import { toast } from "sonner";
 
 const DeleteEmployee = () => {
   const queryClient = useQueryClient();
@@ -31,7 +32,7 @@ const DeleteEmployee = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["employees"] });
       setIsDeleteEmployeeOpen(false);
-      alert("Employee deleted successfully");
+      toast.success("Employee deleted successfully");
     },
   });
 

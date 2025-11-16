@@ -1,18 +1,23 @@
 "use client";
 
+import { Skeleton } from "@/components/ui/skeleton";
 import axiosInstance from "@/lib/axiosInstance";
 import { useQuery } from "@tanstack/react-query";
 import { LucideArrowUpRight, LucideUsers } from "lucide-react";
 
 const EmployeeOverview = () => {
   //Get overview of employees
-  const { data: overview } = useQuery({
+  const { data: overview, isLoading } = useQuery({
     queryKey: ["overview", "employee-view"],
     queryFn: async () => {
       const res = await axiosInstance.get("/dashboard/overview");
       return res.data.employees;
     },
   });
+
+  if (isLoading) {
+    return <Skeleton className="w-full h-full" />;
+  }
 
   return (
     <div className="w-full h-full p-4 flex flex-col justify-between">

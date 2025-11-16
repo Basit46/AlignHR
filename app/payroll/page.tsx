@@ -12,7 +12,7 @@ import CustomSearch from "../components/custom/CustomSearch";
 import { useGlobalStore } from "@/store/globalStore";
 import { useQuery } from "@tanstack/react-query";
 import axiosInstance from "@/lib/axiosInstance";
-import { calculateNigeriaPAYE } from "@/utils";
+import { calculateNigeriaPAYE, exportJSONToExcel } from "@/utils";
 
 const PayrollTable = () => {
   const router = useRouter();
@@ -20,7 +20,7 @@ const PayrollTable = () => {
     useGlobalStore();
 
   //GET Payroll
-  const { data: payroll = [] } = useQuery({
+  const { data: payroll = [], isLoading } = useQuery({
     queryKey: ["payroll"],
     queryFn: async () => {
       const res = await axiosInstance.get("/payroll");
@@ -87,7 +87,7 @@ const PayrollTable = () => {
         const rate = row.original.taxRate;
         return (
           <span className="text-gray-700">
-            {row.original.employeeType !== "intern"
+            {row.original.contractType !== "intern"
               ? row.original.basePay
                 ? `₦${calculateNigeriaPAYE(row.original.basePay).taxAmount} (${
                     calculateNigeriaPAYE(row.original.basePay).taxPercent
@@ -181,7 +181,10 @@ const PayrollTable = () => {
         </div>
 
         <div className="flex gap-2 items-center">
-          <Button variant={"outline"}>
+          <Button
+            variant={"outline"}
+            onClick={() => exportJSONToExcel(payroll, "Payroll")}
+          >
             <LucideFileSpreadsheet />
             Export
           </Button>
@@ -220,6 +223,7 @@ const PayrollTable = () => {
             columns={columns}
             handleRowClick={handleRowClick}
             placeholder="No employee found"
+            isLoading={isLoading}
           />
         </div>
       </div>

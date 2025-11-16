@@ -17,6 +17,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import z from "zod";
 
 //ZOD SCHEMA
@@ -25,7 +26,7 @@ const PayrollSchema = z.object({
   addOns: z.number().optional(),
   taxId: z.string().optional(),
   bankName: z.string().optional(),
-  accountNo: z.number().optional(),
+  accountNo: z.string().optional(),
 });
 
 type PayrollType = z.infer<typeof PayrollSchema>;
@@ -50,7 +51,7 @@ function UpdatePayrollSheet() {
       addOns: employeePaymentDetails.addOns,
       taxId: employeePaymentDetails.taxId,
       bankName: employeePaymentDetails.bankName,
-      accountNo: parseFloat(employeePaymentDetails.accountNo),
+      accountNo: employeePaymentDetails.accountNo,
     },
   });
 
@@ -60,7 +61,7 @@ function UpdatePayrollSheet() {
       addOns: employeePaymentDetails.addOns,
       taxId: employeePaymentDetails.taxId,
       bankName: employeePaymentDetails.bankName,
-      accountNo: parseFloat(employeePaymentDetails.accountNo),
+      accountNo: employeePaymentDetails.accountNo,
     });
   }, [employeePaymentDetails, reset]);
 
@@ -75,7 +76,7 @@ function UpdatePayrollSheet() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["payroll"] });
-      alert("Saved changes successfully");
+      toast.success("Payment details updated successfully");
     },
   });
 

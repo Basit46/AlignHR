@@ -1,5 +1,6 @@
 "Use client";
 
+import { Skeleton } from "@/components/ui/skeleton";
 import axiosInstance from "@/lib/axiosInstance";
 import { formatAmount } from "@/utils";
 import { useQuery } from "@tanstack/react-query";
@@ -8,13 +9,17 @@ import React from "react";
 
 const PayrollOverview = () => {
   //Get overview of employees
-  const { data: overview } = useQuery({
+  const { data: overview, isLoading } = useQuery({
     queryKey: ["overview", "payroll-view"],
     queryFn: async () => {
       const res = await axiosInstance.get("/dashboard/overview");
       return res.data.payroll;
     },
   });
+
+  if (isLoading) {
+    return <Skeleton className="w-full h-full" />;
+  }
 
   return (
     <div className="w-full h-full p-4 flex flex-col justify-between">
@@ -31,14 +36,14 @@ const PayrollOverview = () => {
         </h1>
 
         <div className="flex justify-between">
-          <p className="text-gray-700 text-sm">Salary Transactions</p>
+          <p className="text-gray-700 text-sm">Total salary per month</p>
 
-          <div className="flex gap-1 items-center text-success">
+          {/* <div className="flex gap-1 items-center text-success">
             <p className="text-xs">+2.5%</p>
             <div className="size-6 bg-success rounded-full grid place-items-center">
               <LucideArrowUpRight className="text-white size-4" />
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

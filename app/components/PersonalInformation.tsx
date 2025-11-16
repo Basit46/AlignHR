@@ -20,6 +20,7 @@ import { useEffect } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axiosInstance from "@/lib/axiosInstance";
 import { useParams } from "next/navigation";
+import { toast } from "sonner";
 
 const personalInfoSchema = z.object({
   name: z.string().min(1, "Full name is required"),
@@ -83,7 +84,7 @@ const PersonalInformation = ({ employee }: { employee: EmployeeType }) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["employees", id] });
-      alert("Saved changes successfully");
+      toast.success("Employee updated successfully");
     },
   });
 

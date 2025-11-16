@@ -1,8 +1,6 @@
 "use client";
 
 import React from "react";
-import AddEmployee from "./components/modals/AddEmployee";
-import UpdatePayroll from "./components/modals/UpdatePayroll";
 import EmployeeOverview from "./components/overview/EmployeeOverview";
 import PayrollOverview from "./components/overview/PayrollOverview";
 import LeaveOverview from "./components/overview/LeaveOverview";
@@ -12,9 +10,14 @@ import AttendanceChart from "./components/overview/AttendanceChart";
 import ContractOverview from "./components/overview/ContractOverview";
 import AIinsight from "./components/overview/AIinsight";
 import { useUser } from "@/lib/hooks/useUser";
+import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
+import { useGlobalStore } from "@/store/globalStore";
 
 const Overview = () => {
+  const router = useRouter();
   const { fullName } = useUser();
+  const { setIsAddEmployeeOpen } = useGlobalStore();
 
   return (
     <div className="w-full px-[var(--main-px)] py-[20px]">
@@ -29,8 +32,16 @@ const Overview = () => {
         </div>
 
         <div className="flex items-center gap-2">
-          <AddEmployee />
-          <UpdatePayroll />
+          <Button
+            variant={"outline"}
+            onClick={() => setIsAddEmployeeOpen(true)}
+          >
+            Add Employee
+          </Button>
+
+          <Button onClick={() => router.push("/payroll")} variant={"outline"}>
+            Update Payroll
+          </Button>
         </div>
       </div>
 

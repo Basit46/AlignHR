@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import RootLayoutContent from "./components/RootLayoutContent";
 import Head from "next/head";
+import { Toaster } from "@/components/ui/sonner";
 
 const inter = Inter({
   variable: "--inter",
@@ -58,6 +59,17 @@ export default function RootLayout({
       </Head>
       <body className={`${inter.variable} min-h-screen bg-pry/10`}>
         <RootLayoutContent>{children}</RootLayoutContent>
+        <Toaster
+          position="top-center"
+          toastOptions={{
+            style: {
+              background: "white",
+              border: "none",
+              borderRadius: "50px",
+              color: "black",
+            },
+          }}
+        />
       </body>
     </html>
   );

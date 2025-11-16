@@ -1,5 +1,6 @@
 "use client";
 
+import { Skeleton } from "@/components/ui/skeleton";
 import axiosInstance from "@/lib/axiosInstance";
 import { useQuery } from "@tanstack/react-query";
 import { Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
@@ -12,13 +13,17 @@ const data = [
 
 const ContractOverview = () => {
   //Get contract types of employees
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["overview", "contractChart"],
     queryFn: async () => {
       const res = await axiosInstance.get("/dashboard/contract-chart");
       return res.data.chart;
     },
   });
+
+  if (isLoading) {
+    return <Skeleton className="w-full h-full" />;
+  }
 
   return (
     <div className="w-full h-full p-4 flex flex-col justify-between gap-4">

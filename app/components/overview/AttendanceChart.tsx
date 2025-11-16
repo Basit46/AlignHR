@@ -14,14 +14,31 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useQuery } from "@tanstack/react-query";
+import axiosInstance from "@/lib/axiosInstance";
 
 const AttendanceChart = () => {
   const [mounted, setMounted] = useState(false);
   const [month, setMonth] = useState("january");
   const [daysInMonth, setDaysInMonth] = useState(31);
-  const [colorIndexes, setColorIndexes] = useState<number[]>([]);
 
-  // Mark component as mounted
+  //GET Employees attendance record
+  const { data = [] } = useQuery({
+    queryKey: ["attendance"],
+    queryFn: async () => {
+      const res = await axiosInstance.get("/attendance");
+      const record = res.data.attendanceRecords
+        ? res.data.attendanceRecords.map((r: any) => ({
+            value: r?.value,
+            date: new Date(r?.date),
+            level: r.value > 70 ? 3 : r.value > 60 ? 2 : 1,
+          }))
+        : [];
+
+      return record;
+    },
+  });
+
   useEffect(() => {
     setMounted(true);
 
@@ -38,19 +55,14 @@ const AttendanceChart = () => {
     return new Date(year, monthIndex + 1, 0).getDate();
   };
 
-  // Update days when month changes
+  // To Update days when month changes
   useEffect(() => {
     const year = new Date().getFullYear();
     const days = getDaysInMonth(month, year);
     setDaysInMonth(days);
-
-    // Precompute random color indexes for each day
-    setColorIndexes(
-      Array.from({ length: days }, () => Math.floor(Math.random() * 4))
-    );
   }, [month]);
 
-  // Generate days and weekdays
+  // To Generate days and weekdays
   const days = useMemo(() => {
     const year = new Date().getFullYear();
     const monthIndex = new Date(`${month} 1, ${year}`).getMonth();
@@ -64,12 +76,7 @@ const AttendanceChart = () => {
 
   if (!mounted) return null; // Avoid server/client mismatch
 
-  const notificationColors = [
-    "bg-gray-300",
-    "bg-pry/30",
-    "bg-pry/60",
-    "bg-pry",
-  ];
+  const notificationColors = ["!bg-pry/30", "!bg-pry/60", "!bg-pry"];
 
   return (
     <div className="w-full h-full p-4 flex flex-col justify-between gap-4">
@@ -80,10 +87,10 @@ const AttendanceChart = () => {
           </h1>
 
           <div className="flex gap-2 items-center flex-wrap">
-            <div className="flex gap-1 items-center">
+            {/* <div className="flex gap-1 items-center">
               <div className="size-3 rounded-[2px] bg-gray-300" />
               <p className="text-[10px] text-gray-800">No work day</p>
-            </div>
+            </div> */}
 
             <div className="flex gap-1 items-center">
               <div className="size-3 rounded-[2px] bg-pry/30" />
@@ -116,11 +123,27 @@ const AttendanceChart = () => {
         </Select>
       </div>
 
-      {/* Attendance grid */}
       <div className="flex-1 w-full">
         <div className="h-fit w-full grid grid-cols-7 gap-2">
-          {days.map(({ day, weekday }, i) => {
-            const colorClass = notificationColors[colorIndexes[i]];
+          {days.map(({ day, weekday }) => {
+            const year = new Date().getFullYear();
+            const monthIndex = new Date(`${month} 1, ${year}`).getMonth();
+            const dateObj = new Date(year, monthIndex, day);
+
+            // Format current grid date to compare with DB record dates
+            const formatted = dateObj.toISOString().split("T")[0];
+
+            // Find attendance record for this day
+            const record = data.find(
+              (r: any) => r.date?.toISOString().split("T")[0] === formatted
+            );
+
+            // Determine level
+            const level = record ? record.level - 1 : null;
+
+            // Determine color
+            const colorClass =
+              level !== null ? notificationColors[level] : "bg-gray-300"; // default for no record
 
             return (
               <Tooltip key={day}>
@@ -133,6 +156,12 @@ const AttendanceChart = () => {
                   <p className="text-sm">
                     <span className="capitalize">{weekday}</span>,{" "}
                     <span className="capitalize">{month}</span> {day}
+                    {record && (
+                      <>
+                        <br />
+                        Attendance: {record.value.toFixed(1)}%
+                      </>
+                    )}
                   </p>
                 </TooltipContent>
               </Tooltip>

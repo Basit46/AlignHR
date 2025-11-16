@@ -24,7 +24,7 @@ export type EmployeeType = {
   addOns?: number;
   taxId?: string;
   bankName?: string;
-  accountNo?: any;
+  accountNo?: string;
   attendance?: "present" | "absent" | "n/a";
   dateJoined?: Date;
 };

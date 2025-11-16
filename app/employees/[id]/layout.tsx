@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import axiosInstance from "@/lib/axiosInstance";
 import { EmployeeType } from "@/types";
-import { calculateAge, formatDateWithSuffix } from "@/utils";
+import { calculateAge, exportObjectToPDF, formatDateWithSuffix } from "@/utils";
 import { useQuery } from "@tanstack/react-query";
 import { LucideChevronLeft, LucideFile } from "lucide-react";
 import Image from "next/image";
@@ -98,7 +98,20 @@ const EmployeeDetailsLayout = ({ children }: { children: React.ReactNode }) => {
               />
             </div>
 
-            <Button className="absolute top-[70px] right-[20px]">
+            <Button
+              onClick={() =>
+                exportObjectToPDF(
+                  employee,
+                  `${
+                    employee?.name
+                      ? employee?.name.replace(" ", "_")
+                      : "employee"
+                  }.pdf`,
+                  "Employee Information"
+                )
+              }
+              className="absolute top-[70px] right-[20px]"
+            >
               <LucideFile /> Export
             </Button>
           </div>

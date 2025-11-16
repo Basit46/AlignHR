@@ -1,6 +1,11 @@
 "use client";
 
+import { Skeleton } from "@/components/ui/skeleton";
+
 const AIinsight = () => {
+  //   if (isLoading) {
+  //   return <Skeleton className="w-full h-full" />;
+  // }
   return (
     <div className="w-full h-full p-4 flex flex-col justify-between gap-4">
       <div>

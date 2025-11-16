@@ -26,6 +26,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axiosInstance from "@/lib/axiosInstance";
+import { useRouter } from "next/navigation";
 
 //ZOD SCHEMA
 const AddEmployeeSchema = z.object({
@@ -43,6 +44,7 @@ const AddEmployeeSchema = z.object({
 type AddEmployeeType = z.infer<typeof AddEmployeeSchema>;
 
 function AddEmployeeSheet() {
+  const router = useRouter();
   const queryClient = useQueryClient();
   const { isAddEmployeeOpen, setIsAddEmployeeOpen } = useGlobalStore();
 
@@ -77,6 +79,7 @@ function AddEmployeeSheet() {
       reset();
       setIsAddEmployeeOpen(false);
       queryClient.invalidateQueries({ queryKey: ["employees"] });
+      router.push("/employees");
     },
   });
 

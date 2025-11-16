@@ -69,6 +69,13 @@ export async function GET(req: NextRequest) {
         0
       ) || 0;
 
+    //Attendance
+    const employeesPresent = employees.filter(
+      (e: any) => e.attendance == "present"
+    );
+    const attendanceChange = (employeesPresent.length / employees.length) * 100;
+    const attendanceTrend = attendanceChange >= 0 ? "up" : "down";
+
     return NextResponse.json(
       {
         employees: {
@@ -85,6 +92,13 @@ export async function GET(req: NextRequest) {
 
         payroll: {
           number: totalPayrollAmount,
+        },
+
+        attendance: {
+          all: employees.length,
+          number: employeesPresent.length,
+          percentChange: attendanceChange.toFixed(0),
+          trend: attendanceTrend,
         },
       },
       { status: 200 }

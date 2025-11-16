@@ -3,186 +3,60 @@
 import { Button } from "@/components/ui/button";
 import React, { useMemo, useState } from "react";
 import DataTable from "../components/DataTable";
-import { useRouter } from "next/navigation";
 import { ColumnDef } from "@tanstack/react-table";
-import CustomSelect from "../components/custom/CustomSelect";
-import { departments, employeeTypes } from "@/constants";
+import { departments } from "@/constants";
 import CustomSearch from "../components/custom/CustomSearch";
-import { useGlobalStore } from "@/store/globalStore";
 import { Input } from "@/components/ui/input";
-
-const employees = [
-  {
-    id: "EMP001",
-    name: "Sarah Okafor",
-    email: "sarahokafor@gmail.com",
-    role: "Customer Support",
-    department: "engineering",
-    employeeType: "permanent",
-  },
-
-  {
-    id: "EMP002",
-    name: "John Adeyemi",
-    email: "john.adeyemi@example.com",
-    role: "Frontend Developer",
-    department: "engineering",
-    employeeType: "permanent",
-  },
-  {
-    id: "EMP003",
-    name: "Amina Bello",
-    email: "amina.bello@example.com",
-    role: "Backend Developer",
-    department: "engineering",
-    employeeType: "contract",
-  },
-
-  {
-    id: "EMP005",
-    name: "Chinyere Ugo",
-    email: "chinyere.ugo@example.com",
-    role: "HR Manager",
-    department: "human-resources",
-    employeeType: "permanent",
-  },
-  {
-    id: "EMP006",
-    name: "David Afolabi",
-    email: "david.afolabi@example.com",
-    role: "QA Tester",
-    department: "engineering",
-    employeeType: "contract",
-  },
-  {
-    id: "EMP007",
-    name: "Grace Omotayo",
-    email: "grace.omotayo@example.com",
-    role: "Marketing Specialist",
-    department: "marketing",
-    employeeType: "permanent",
-  },
-  {
-    id: "EMP008",
-    name: "Tunde Bakare",
-    email: "tunde.bakare@example.com",
-    role: "Sales Executive",
-    department: "sales",
-    employeeType: "permanent",
-  },
-  {
-    id: "EMP009",
-    name: "Naomi Uche",
-    email: "naomi.uche@example.com",
-    role: "Operations Officer",
-    department: "operations",
-    employeeType: "permanent",
-  },
-  {
-    id: "EMP010",
-    name: "Samuel Ezenwa",
-    email: "samuel.ezenwa@example.com",
-    role: "DevOps Engineer",
-    department: "engineering",
-    employeeType: "permanent",
-  },
-
-  {
-    id: "EMP011",
-    name: "Rita Nwosu",
-    email: "rita.nwosu@example.com",
-    role: "Content Writer",
-    department: "marketing",
-    employeeType: "contract",
-  },
-
-  {
-    id: "EMP013",
-    name: "Blessing Igwe",
-    email: "blessing.iwe@example.com",
-    role: "Customer Support",
-    department: "operations",
-    employeeType: "permanent",
-  },
-  {
-    id: "EMP014",
-    name: "Oluwatobi Akinwale",
-    email: "tobi.akinwale@example.com",
-    role: "Finance Officer",
-    department: "finance",
-    employeeType: "permanent",
-  },
-  {
-    id: "EMP015",
-    name: "Stephen Okon",
-    email: "stephen.okon@example.com",
-    role: "Office Assistant",
-    department: "operations",
-    employeeType: "contract",
-  },
-  {
-    id: "EMP016",
-    name: "Favour Chukwu",
-    email: "favour.chukwu@example.com",
-    role: "Data Analyst",
-    department: "engineering",
-    employeeType: "permanent",
-  },
-  {
-    id: "EMP017",
-    name: "Henry Edet",
-    email: "henry.edet@example.com",
-    role: "Security Officer",
-    department: "operations",
-    employeeType: "permanent",
-  },
-  {
-    id: "EMP018",
-    name: "Vivian Abiola",
-    email: "vivian.abiola@example.com",
-    role: "Recruiter",
-    department: "human-resources",
-    employeeType: "contract",
-  },
-  {
-    id: "EMP019",
-    name: "Ibrahim Yusuf",
-    email: "ibrahim.yusuf@example.com",
-    role: "IT Support",
-    department: "engineering",
-    employeeType: "permanent",
-  },
-  {
-    id: "EMP020",
-    name: "Chisom Anya",
-    email: "chisom.anya@example.com",
-    role: "Executive Assistant",
-    department: "operations",
-    employeeType: "permanent",
-  },
-  {
-    id: "EMP021",
-    name: "Oghenekevwe Akpofure",
-    email: "kevy.akpofure@example.com",
-    role: "Full Stack Developer",
-    department: "engineering",
-    employeeType: "contract",
-  },
-];
+import { EmployeeType } from "@/types";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import axiosInstance from "@/lib/axiosInstance";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 const MarkAttendance = () => {
   const router = useRouter();
-  const { setIsUpdatePayrollOpen } = useGlobalStore();
+  const queryClient = useQueryClient();
 
+  const [employees, setEmployees] = useState<EmployeeType[]>([]);
   const [searchValue, setSearchValue] = useState("");
-  const [deptFilter, setDeptFilter] = useState("all");
-  const [contractFilter, setContractFilter] = useState("all");
+
+  //GET Employees attendance list
+  const { refetch: refetchEmployees, isLoading } = useQuery({
+    queryKey: ["attendance"],
+    queryFn: async () => {
+      const res = await axiosInstance.get("/attendance");
+      setEmployees(res.data.attendance);
+      return res.data.attendance;
+    },
+  });
+
+  //Update attendance record
+  const { mutate, isPending } = useMutation({
+    mutationFn: async () => {
+      const res = await axiosInstance.put("/attendance", { employees });
+      return res.data;
+    },
+    onSuccess: () => {
+      toast.success("Attendance updated successfully");
+      queryClient.invalidateQueries({ queryKey: ["attendance"] });
+      queryClient.invalidateQueries({ queryKey: ["employees"] });
+    },
+  });
 
   const todaysDate = new Date().toLocaleDateString("en-US", {
     month: "short",
     day: "numeric",
     year: "numeric",
   });
+
+  const markAllAsPresent = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setEmployees(
+      employees?.map((e) => ({
+        ...e,
+        attendance: event.target.checked ? "present" : "absent",
+      }))
+    );
+  };
 
   const columns: ColumnDef<any>[] = [
     {
@@ -213,18 +87,44 @@ const MarkAttendance = () => {
       ),
     },
     {
-      accessorKey: "action",
-      header: todaysDate,
-      cell: () => (
+      accessorKey: "attendance",
+      header: () => (
+        <div className="flex gap-2">
+          <Input
+            checked={!employees.some((e) => e.attendance !== "present")}
+            onChange={markAllAsPresent}
+            type="checkbox"
+            className="w-4 h-4"
+          />
+          <p>{todaysDate}</p>
+        </div>
+      ),
+      cell: ({ row }) => (
         <div onClick={(e) => e.stopPropagation()} className="flex items-center">
-          <Input type="checkbox" className="w-4 h-4" />
+          <Input
+            checked={row.original.attendance == "present"}
+            onChange={(event) =>
+              setEmployees(
+                employees.map((e) =>
+                  e._id === row.original._id
+                    ? {
+                        ...e,
+                        attendance: event.target.checked ? "present" : "absent",
+                      }
+                    : e
+                )
+              )
+            }
+            type="checkbox"
+            className="w-4 h-4"
+          />
         </div>
       ),
     },
   ];
 
-  const handleRowClick = (id: string) => {
-    console.log(`/employees/${id}`);
+  const handleRowClick = (row: any) => {
+    router.push(`/employees/${row._id}`);
   };
 
   const filteredData = useMemo(() => {
@@ -241,17 +141,20 @@ const MarkAttendance = () => {
 
   return (
     <div className="mt-6">
-      <div className="mb-4 flex items-center justify-between gap-3 flex-wrap">
+      <div className="mb-4 flex items-center justify-between gap-3">
         <CustomSearch
           placeholder="Search employee"
           value={searchValue}
           setValue={setSearchValue}
         />
 
-        <div className="flex items-center gap-2 flex-wrap">
-          <Button variant="default">Mark All Present</Button>
-
-          <Button variant="outline">Mark as Non-Work Day</Button>
+        <div className="flex items-center gap-3">
+          <Button onClick={() => refetchEmployees()} variant="outline">
+            Reset
+          </Button>
+          <Button onClick={() => mutate()} loading={isPending}>
+            Save attendance
+          </Button>
         </div>
       </div>
 
@@ -260,6 +163,7 @@ const MarkAttendance = () => {
         columns={columns}
         handleRowClick={handleRowClick}
         placeholder="No employee found"
+        isLoading={isLoading}
       />
     </div>
   );

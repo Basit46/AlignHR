@@ -12,12 +12,14 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { LucideLoader } from "lucide-react";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   handleRowClick: (v: any) => void;
   placeholder?: string;
+  isLoading?: boolean;
 }
 
 export default function DataTable<TData, TValue>({
@@ -25,6 +27,7 @@ export default function DataTable<TData, TValue>({
   data,
   handleRowClick,
   placeholder,
+  isLoading,
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data,
@@ -59,8 +62,20 @@ export default function DataTable<TData, TValue>({
             </TableRow>
           ))}
         </TableHeader>
+
         <TableBody>
-          {table.getRowModel().rows?.length ? (
+          {isLoading ? (
+            <TableRow>
+              <TableCell
+                colSpan={columns.length}
+                className="h-[60px] text-center"
+              >
+                <div className="w-fit mx-auto">
+                  <LucideLoader className="animate-spin" />
+                </div>
+              </TableCell>
+            </TableRow>
+          ) : table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row) => (
               <TableRow
                 key={row.id}
@@ -80,7 +95,10 @@ export default function DataTable<TData, TValue>({
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center">
+              <TableCell
+                colSpan={columns.length}
+                className="h-[60px] text-center"
+              >
                 {placeholder || "No results"}
               </TableCell>
             </TableRow>

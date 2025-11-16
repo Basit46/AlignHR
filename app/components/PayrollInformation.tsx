@@ -20,6 +20,7 @@ import { useEffect } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axiosInstance from "@/lib/axiosInstance";
 import { useParams } from "next/navigation";
+import { toast } from "sonner";
 
 //ZOD SCHEMA
 const PayrollSchema = z.object({
@@ -27,7 +28,7 @@ const PayrollSchema = z.object({
   addOns: z.number().optional(),
   taxId: z.string().optional(),
   bankName: z.string().optional(),
-  accountNo: z.number().optional(),
+  accountNo: z.string().optional(),
 });
 
 type PayrollType = z.infer<typeof PayrollSchema>;
@@ -50,7 +51,7 @@ const PayrollInformation = ({ employee }: { employee: EmployeeType }) => {
       addOns: employee.addOns,
       taxId: employee.taxId,
       bankName: employee.bankName,
-      accountNo: parseFloat(employee.accountNo),
+      accountNo: employee.accountNo,
     },
   });
 
@@ -66,6 +67,7 @@ const PayrollInformation = ({ employee }: { employee: EmployeeType }) => {
       return res.data;
     },
     onSuccess: () => {
+      toast.success("Employee updated successfully");
       queryClient.invalidateQueries({ queryKey: ["payroll"] });
       queryClient.invalidateQueries({ queryKey: ["employees", id] });
     },
@@ -81,7 +83,7 @@ const PayrollInformation = ({ employee }: { employee: EmployeeType }) => {
       addOns: employee.addOns,
       taxId: employee.taxId,
       bankName: employee.bankName,
-      accountNo: parseFloat(employee.accountNo),
+      accountNo: employee.accountNo,
     });
   };
 
@@ -162,9 +164,8 @@ const PayrollInformation = ({ employee }: { employee: EmployeeType }) => {
           <Label htmlFor="accountNo">Bank account no</Label>
           <Input
             id="accountNo"
-            type="number"
             placeholder="Enter account no"
-            {...register("accountNo", { valueAsNumber: true })}
+            {...register("accountNo")}
           />
           {errors.accountNo && (
             <p className="text-red-500 text-sm">{errors.accountNo.message}</p>

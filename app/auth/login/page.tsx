@@ -43,7 +43,7 @@ const Login = () => {
       return res.data;
     },
     onSuccess: (res) => {
-      router.replace("/");
+      router.push("/");
       Cookie.set(TOKEN, res.token, { expires: 7 });
     },
     onError(error: any) {

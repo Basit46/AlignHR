@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { unique } from "next/dist/build/utils";
 
 type SingleEmployee = {
   name: string;
@@ -24,10 +25,12 @@ type SingleEmployee = {
 type EmployeeSchemaType = {
   userId: mongoose.Types.ObjectId;
   employees: SingleEmployee[];
+  attendanceRecords: { date: Date; value: string }[];
 };
 
 const singleEmployeeSchema = new mongoose.Schema(
   {
+    //Basic info
     name: { type: String, default: "" },
     email: { type: String, default: "" },
     phoneNum: { type: String, default: "" },
@@ -40,12 +43,14 @@ const singleEmployeeSchema = new mongoose.Schema(
     contractType: { type: String, default: "" },
     isOnLeave: { type: Boolean, default: false },
 
+    //Payroll
     basePay: { type: Number, default: 0 },
     addOns: { type: Number, default: 0 },
     taxId: { type: String, default: "" },
     bankName: { type: String, default: "" },
     accountNo: { type: String, default: "" },
 
+    //Attendance
     attendance: {
       type: String,
       enum: ["present", "absent", "n/a"],
@@ -61,6 +66,12 @@ const employeeSchema = new mongoose.Schema<EmployeeSchemaType>(
   {
     userId: { type: mongoose.Schema.ObjectId, ref: "User", required: true },
     employees: [singleEmployeeSchema],
+    attendanceRecords: [
+      {
+        date: { type: Date, unique: true, default: Date.now },
+        value: { type: Number },
+      },
+    ],
   },
   { timestamps: true }
 );

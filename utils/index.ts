@@ -1,3 +1,7 @@
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
+import jsPDF from "jspdf";
+
 export const formatDateWithSuffix = (dateString: string | Date | undefined) => {
   const date = new Date(dateString || "");
 
@@ -124,3 +128,46 @@ export const formatAmount = (amount: number) => {
 
   return (amount / 1_000_000_000).toFixed(2).replace(/\.00$/, "") + "b";
 };
+
+export function exportJSONToExcel(data: any[], fileName = "alignhr-data.xlsx") {
+  if (!data || !data.length) return;
+
+  const worksheet = XLSX.utils.json_to_sheet(data);
+
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+
+  const excelBuffer = XLSX.write(workbook, {
+    bookType: "xlsx",
+    type: "array",
+  });
+
+  const blob = new Blob([excelBuffer], {
+    type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  });
+
+  saveAs(blob, fileName);
+}
+
+export function exportObjectToPDF(
+  data: Record<string, any>,
+  fileName = "data.pdf",
+  title = "Employee"
+) {
+  if (!data) return;
+
+  const doc = new jsPDF();
+  let y = 20;
+
+  doc.setFontSize(16);
+  doc.text(title, 14, y);
+  y += 10;
+
+  doc.setFontSize(12);
+  Object.entries(data).forEach(([key, value]) => {
+    doc.text(`${key}: ${value}`, 14, y);
+    y += 8;
+  });
+
+  doc.save(fileName);
+}
