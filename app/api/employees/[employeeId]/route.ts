@@ -40,6 +40,10 @@ export async function PUT(
   const { employeeId } = await params;
   const updatedFields = await req.json();
 
+  if ("isOnLeave" in updatedFields) {
+    updatedFields.isOnLeave = updatedFields.isOnLeave === "ON";
+  }
+
   try {
     await connectDB();
 

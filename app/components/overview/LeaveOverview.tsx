@@ -6,13 +6,14 @@ import React from "react";
 
 const LeaveOverview = () => {
   //Get overview of leaves
-  const { data: overview, isLoading } = useQuery({
-    queryKey: ["overview", "leaves-view"],
+  const { data, isLoading } = useQuery({
+    queryKey: ["overview"],
     queryFn: async () => {
       const res = await axiosInstance.get("/dashboard/overview");
-      return res.data.leaves;
+      return res.data;
     },
   });
+  const overview = data?.leaves;
 
   if (isLoading) {
     return <Skeleton className="w-full h-full" />;

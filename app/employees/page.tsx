@@ -42,6 +42,8 @@ const Employees = () => {
       const res = await axiosInstance.get("/employees");
       return res.data.employees;
     },
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
   });
 
   const columns: ColumnDef<any>[] = [

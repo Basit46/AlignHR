@@ -4,18 +4,19 @@ import { Skeleton } from "@/components/ui/skeleton";
 import axiosInstance from "@/lib/axiosInstance";
 import { formatAmount } from "@/utils";
 import { useQuery } from "@tanstack/react-query";
-import { LucideArrowUpRight, LucideWalletCards } from "lucide-react";
+import { LucideWalletCards } from "lucide-react";
 import React from "react";
 
 const PayrollOverview = () => {
-  //Get overview of employees
-  const { data: overview, isLoading } = useQuery({
-    queryKey: ["overview", "payroll-view"],
+  //Get overview of payroll
+  const { data, isLoading } = useQuery({
+    queryKey: ["overview"],
     queryFn: async () => {
       const res = await axiosInstance.get("/dashboard/overview");
-      return res.data.payroll;
+      return res.data;
     },
   });
+  const overview = data?.payroll;
 
   if (isLoading) {
     return <Skeleton className="w-full h-full" />;

@@ -3,22 +3,19 @@
 import { Skeleton } from "@/components/ui/skeleton";
 import axiosInstance from "@/lib/axiosInstance";
 import { useQuery } from "@tanstack/react-query";
-import {
-  LucideArrowDownRight,
-  LucideArrowUpRight,
-  LucideCalendarCheck2,
-} from "lucide-react";
+import { LucideArrowUpRight, LucideCalendarCheck2 } from "lucide-react";
 import React from "react";
 
 const AttendanceOverview = () => {
   //Get overview of attendance
-  const { data: overview, isLoading } = useQuery({
-    queryKey: ["overview", "attendance-view"],
+  const { data, isLoading } = useQuery({
+    queryKey: ["overview"],
     queryFn: async () => {
       const res = await axiosInstance.get("/dashboard/overview");
-      return res.data.attendance;
+      return res.data;
     },
   });
+  const overview = data?.attendance;
 
   if (isLoading) {
     return <Skeleton className="w-full h-full" />;

@@ -7,13 +7,14 @@ import { LucideArrowUpRight, LucideUsers } from "lucide-react";
 
 const EmployeeOverview = () => {
   //Get overview of employees
-  const { data: overview, isLoading } = useQuery({
-    queryKey: ["overview", "employee-view"],
+  const { data, isLoading } = useQuery({
+    queryKey: ["overview"],
     queryFn: async () => {
       const res = await axiosInstance.get("/dashboard/overview");
-      return res.data.employees;
+      return res.data;
     },
   });
+  const overview = data?.employees;
 
   if (isLoading) {
     return <Skeleton className="w-full h-full" />;

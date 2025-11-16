@@ -108,7 +108,6 @@ function NotificationsSheet() {
             loading={isPending}
             disabled={!hasPendingNoti}
             onClick={() => MarkAllAsRead()}
-            autoFocus
             className="w-full h-[44px] rounded-[8px]"
           >
             Mark all as read

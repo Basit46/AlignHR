@@ -75,23 +75,6 @@ const PersonalInformation = ({ employee }: { employee: EmployeeType }) => {
       handleReset();
     }
   }, [employee, reset]);
-
-  //Edit employee details
-  const { mutate, isPending } = useMutation({
-    mutationFn: async (data: any) => {
-      const res = await axiosInstance.put(`/employees/${id}`, data);
-      return res.data;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["employees", id] });
-      toast.success("Employee updated successfully");
-    },
-  });
-
-  const onSubmit = (data: PersonalInfoType) => {
-    mutate({ ...data, isOnLeave: data.isOnLeave ? true : false });
-  };
-
   const handleReset = () => {
     reset({
       name: employee.name || "",
@@ -108,6 +91,22 @@ const PersonalInformation = ({ employee }: { employee: EmployeeType }) => {
       department: employee?.department || "",
       isOnLeave: employee?.isOnLeave ? "ON" : "OFF",
     });
+  };
+
+  //Edit employee details
+  const { mutate, isPending } = useMutation({
+    mutationFn: async (data: any) => {
+      const res = await axiosInstance.put(`/employees/${id}`, data);
+      return res.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["employees", id] });
+      toast.success("Employee updated successfully");
+    },
+  });
+
+  const onSubmit = (data: PersonalInfoType) => {
+    mutate(data);
   };
 
   return (
