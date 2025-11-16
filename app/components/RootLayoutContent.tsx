@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Navbar from "./Navbar";
 import { usePathname } from "next/navigation";
@@ -13,7 +13,19 @@ import NotificationsSheet from "./modals/NotificationsSheet";
 const RootLayoutContent = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
   const isAuthRoute = pathname.startsWith("/auth");
-  const queryClient = new QueryClient();
+  const [queryClient] = useState(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            // staleTime: 5 * 60 * 1000,
+            // refetchOnMount: false,
+            // refetchOnWindowFocus: false,
+            refetchOnReconnect: false,
+          },
+        },
+      })
+  );
 
   return (
     <QueryClientProvider client={queryClient}>
