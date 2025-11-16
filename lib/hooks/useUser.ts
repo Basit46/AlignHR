@@ -13,6 +13,7 @@ export const useUser = () => {
     },
     enabled: !!token,
     retry: 2,
+    refetchOnReconnect: true,
   });
 
   const user = data;

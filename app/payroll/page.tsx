@@ -93,7 +93,7 @@ const PayrollTable = () => {
                     calculateNigeriaPAYE(row.original.basePay).taxPercent
                   }%)`
                 : "-"
-              : "—"}
+              : "-"}
           </span>
         );
       },

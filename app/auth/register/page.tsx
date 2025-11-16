@@ -180,10 +180,7 @@ const RegisterAccount = () => {
               )}
             </div>
 
-            <Button
-              disabled={isPending}
-              className="mt-4 w-full h-[44px] rounded-[6px]"
-            >
+            <Button disabled={isPending} className="mt-4 w-full h-[44px]">
               {!isPending ? (
                 "Create Account"
               ) : (

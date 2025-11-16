@@ -57,6 +57,10 @@ const Login = () => {
     mutate(data);
   };
 
+  const useDemoAccount = () => {
+    mutate({ email: "demo@alignhr.com", password: "Demo@001" });
+  };
+
   return (
     <div className="h-screen flex">
       <div className="h-full w-1/2 bg-gray-900 flex flex-col">
@@ -144,8 +148,15 @@ const Login = () => {
               )}
             </div>
 
-            <Button className="mt-4 w-full h-[44px] rounded-[6px]">
+            <Button className="mt-4 w-full h-[44px]">
               {!isPending ? "Login" : <LucideLoader className="animate-spin" />}
+            </Button>
+            <Button
+              type="button"
+              onClick={() => useDemoAccount()}
+              className="mt-[-6px] w-full h-[44px] bg-[chocolate] hover:bg-[chocolate]/80"
+            >
+              Use a demo account
             </Button>
 
             {error && (

@@ -58,8 +58,11 @@ export async function GET(req: NextRequest) {
 
     //Leaves
     const employeesOnLeave = employees.filter((e: any) => e.isOnLeave);
+    const totalEmployees = employees.length;
+    const onLeave = employeesOnLeave.length;
     const leavePercentChange =
-      (employeesOnLeave.length / employees.length) * 100;
+      totalEmployees === 0 ? 0 : (onLeave / totalEmployees) * 100;
+
     const leaveTrend = leavePercentChange >= 0 ? "up" : "down";
 
     //Payroll
@@ -73,7 +76,10 @@ export async function GET(req: NextRequest) {
     const employeesPresent = employees.filter(
       (e: any) => e.attendance == "present"
     );
-    const attendanceChange = (employeesPresent.length / employees.length) * 100;
+    const attendanceChange =
+      totalEmployees === 0
+        ? 0
+        : (employeesPresent.length / employees.length) * 100;
     const attendanceTrend = attendanceChange >= 0 ? "up" : "down";
 
     return NextResponse.json(

@@ -72,13 +72,18 @@ function AddEmployeeSheet() {
   //Add employee to DB
   const { mutate, isPending } = useMutation({
     mutationFn: async (data: AddEmployeeType) => {
-      const res = await axiosInstance.post("/employees", data);
+      const res = await axiosInstance.post("/employees", {
+        ...data,
+        addOns: data.addOns || 0,
+        basePay: data.basePay || 0,
+      });
       return res.data;
     },
     onSuccess: () => {
       reset();
       setIsAddEmployeeOpen(false);
       queryClient.invalidateQueries({ queryKey: ["employees"] });
+      queryClient.invalidateQueries({ queryKey: ["summary"] });
       router.push("/employees");
     },
   });

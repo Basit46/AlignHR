@@ -84,7 +84,7 @@ export async function PUT(req: NextRequest) {
       existingRecord.value = presentPercent;
     } else {
       employeesDoc.attendanceRecords.push({
-        date: today,
+        date: new Date(), // use full Date object
         value: presentPercent,
       });
     }

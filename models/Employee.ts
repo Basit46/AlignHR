@@ -68,7 +68,7 @@ const employeeSchema = new mongoose.Schema<EmployeeSchemaType>(
     employees: [singleEmployeeSchema],
     attendanceRecords: [
       {
-        date: { type: Date, unique: true, default: Date.now },
+        date: { type: Date, default: Date.now },
         value: { type: Number },
       },
     ],

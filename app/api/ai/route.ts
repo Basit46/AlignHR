@@ -26,7 +26,7 @@ export async function GET(req: Request) {
                       employeeDoc.employees || []
                     )}
 
-                    Return the summary **only in simple Markdown**.
+                    Return the insight **only in simple Markdown**.
 
                     Allowed:
                     - normal sentences
