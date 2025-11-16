@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import User from "@/models/User";
 import { connectDB } from "@/utils/connectDB";
 import Notification from "@/models/Notification";
+import Employee from "@/models/Employee";
 
 export async function POST(req: Request) {
   try {
@@ -30,6 +31,12 @@ export async function POST(req: Request) {
       password: hashed,
       fullName,
       orgName,
+    });
+
+    await Employee.create({
+      userId: user?._id,
+      employees: [],
+      attendaceRecords: [],
     });
 
     await Notification.create({
