@@ -45,8 +45,8 @@ const EmployeeDetailsLayout = ({ children }: { children: React.ReactNode }) => {
         </div>
       </div>
 
-      <div className="h-[90vh] w-full flex gap-6">
-        <div className="relative w-[300px] h-full bg-white rounded-[12px] overflow-hidden">
+      <div className="min-h-[90vh] w-full flex flex-col xmd:flex-row gap-6">
+        <div className="relative w-full xmd:w-[300px] h-fit pb-[20px] xmd:pb-0 xmd:h-full bg-white rounded-[12px] overflow-hidden">
           <div className="relative w-full h-[150px] bg-pry">
             <Image
               src="/bg.jpg"

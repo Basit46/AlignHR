@@ -131,7 +131,7 @@ const PersonalInformation = ({ employee }: { employee: EmployeeType }) => {
         </div>
       </div>
 
-      <div className="p-3 grid grid-cols-2 gap-4">
+      <div className="p-3 grid grid-cols-1 lg:grid-cols-2 gap-4">
         <div>
           <Label className="text-gray-600" htmlFor="name">
             Employee name
