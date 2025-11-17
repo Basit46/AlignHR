@@ -105,6 +105,7 @@ function AddEmployeeSheet() {
 
         <div className="scrollbar-hide flex-1 overflow-y-auto">
           <form
+            id="add-employee-form"
             onSubmit={handleSubmit(onSubmit)}
             className="h-fit flex flex-col gap-3"
           >
@@ -270,18 +271,19 @@ function AddEmployeeSheet() {
                 </p>
               )}
             </div>
-
-            <SheetFooter>
-              <Button
-                loading={isPending}
-                type="submit"
-                className="w-full h-[44px] rounded-[6px]"
-              >
-                Add Employee
-              </Button>
-            </SheetFooter>
           </form>
         </div>
+
+        <SheetFooter>
+          <Button
+            loading={isPending}
+            type="submit"
+            form="add-employee-form"
+            className="w-full h-[44px] rounded-[6px]"
+          >
+            Add Employee
+          </Button>
+        </SheetFooter>
       </SheetContent>
     </Sheet>
   );

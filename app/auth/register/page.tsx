@@ -62,7 +62,7 @@ const RegisterAccount = () => {
 
   return (
     <div className="h-screen flex">
-      <div className="h-full w-1/2 bg-gray-900 flex flex-col">
+      <div className="h-full hidden xl:flex w-1/2 bg-gray-900 flex-col">
         <div className="relative h-[65%] border-b-4 border-b-pry">
           <Image
             src="/registerImg.jpg"
@@ -87,8 +87,8 @@ const RegisterAccount = () => {
         </div>
       </div>
 
-      <div className="relative h-full w-1/2 flex justify-center items-center">
-        <div className="w-[60%]">
+      <div className="relative h-full w-full xl:w-1/2 flex justify-center items-center">
+        <div className="w-[80%] md:w-[50%] lg:w-[60%]">
           <h1 className="text-[40px] leading-[1.2] font-semibold">
             Get Started
           </h1>

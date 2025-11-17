@@ -1,8 +1,14 @@
 "use client";
 
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { useNotifications } from "@/lib/hooks/useNotifications";
 import { useGlobalStore } from "@/store/globalStore";
-import { LucideBell } from "lucide-react";
+import { PopoverClose } from "@radix-ui/react-popover";
+import { LucideBell, LucideMenu } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -21,14 +27,17 @@ const Navbar = () => {
     { name: "Attendance", path: "/attendance" },
   ];
 
-  //sticky top-0 backdrop-blur-[10px] z-[10]
   return (
-    <div className="relative z-[10] w-full px-[var(--main-px)] py-[20px] flex gap-10 items-center justify-between">
-      <div className="relative size-[36px]">
+    <div className="sticky top-0 md:top-auto md:relative backdrop-blur-[10px] md:backdrop-blur-none z-[10] w-full px-[var(--main-px)] py-[20px] flex gap-10 items-center justify-between">
+      <div
+        role="button"
+        onClick={() => router.push("/")}
+        className="relative size-[36px]"
+      >
         <Image src="/logo.png" fill alt="logo" className="object-cover" />
       </div>
 
-      <div className="flex-1 flex gap-4 items-center">
+      <div className="hidden md:flex flex-1 gap-4 items-center">
         {sections.map((section) => (
           <Link
             key={section.path}
@@ -66,6 +75,40 @@ const Navbar = () => {
         >
           <Image src="/avatar.jpg" fill alt="avatar" className="object-cover" />
         </div>
+        <Popover>
+          <PopoverTrigger>
+            <button className="md:hidden">
+              <LucideMenu className="text-pry" />
+            </button>
+          </PopoverTrigger>
+          <PopoverContent
+            align="end"
+            alignOffset={0}
+            sideOffset={10}
+            className="w-fit p-3"
+          >
+            <div className="flex flex-col gap-4">
+              {sections.map((section) => (
+                <PopoverClose key={section.path} asChild>
+                  <Link
+                    href={section.path}
+                    className={`${
+                      (
+                        section.path == "/"
+                          ? pathname === section.path
+                          : pathname.startsWith(section.path)
+                      )
+                        ? "bg-pry text-white"
+                        : "bg-white text-black"
+                    } rounded-[20px] px-[12px] h-[32px] font-medium flex justify-center items-center text-center text-sm`}
+                  >
+                    <p className="text-center">{section.name}</p>
+                  </Link>
+                </PopoverClose>
+              ))}
+            </div>
+          </PopoverContent>
+        </Popover>
       </div>
     </div>
   );

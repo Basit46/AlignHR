@@ -51,7 +51,7 @@ function UpdatePayrollSheet() {
       addOns: employeePaymentDetails.addOns,
       taxId: employeePaymentDetails.taxId,
       bankName: employeePaymentDetails.bankName,
-      accountNo: employeePaymentDetails.accountNo,
+      accountNo: employeePaymentDetails.accountNo?.toString(),
     },
   });
 
@@ -61,7 +61,7 @@ function UpdatePayrollSheet() {
       addOns: employeePaymentDetails.addOns,
       taxId: employeePaymentDetails.taxId,
       bankName: employeePaymentDetails.bankName,
-      accountNo: employeePaymentDetails.accountNo,
+      accountNo: employeePaymentDetails.accountNo?.toString(),
     });
   }, [employeePaymentDetails, reset]);
 
@@ -100,6 +100,7 @@ function UpdatePayrollSheet() {
 
         <div className="scrollbar-hide flex-1 overflow-y-auto">
           <form
+            id="update-payroll-form"
             onSubmit={handleSubmit(onSubmit)}
             className="h-fit flex flex-col gap-3"
           >
@@ -160,9 +161,8 @@ function UpdatePayrollSheet() {
               <Label htmlFor="accountNo">Bank account no</Label>
               <Input
                 id="accountNo"
-                type="number"
                 placeholder="Enter account no"
-                {...register("accountNo", { valueAsNumber: true })}
+                {...register("accountNo")}
               />
               {errors.accountNo && (
                 <p className="text-red-500 text-sm">
@@ -170,17 +170,18 @@ function UpdatePayrollSheet() {
                 </p>
               )}
             </div>
-
-            <SheetFooter className="">
-              <Button
-                loading={isPending}
-                className="w-full h-[44px] rounded-[6px]"
-              >
-                Update
-              </Button>
-            </SheetFooter>
           </form>
         </div>
+
+        <SheetFooter className="">
+          <Button
+            form="update-payroll-form"
+            loading={isPending}
+            className="w-full h-[44px] rounded-[6px]"
+          >
+            Update
+          </Button>
+        </SheetFooter>
       </SheetContent>
     </Sheet>
   );

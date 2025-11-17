@@ -63,7 +63,7 @@ const Login = () => {
 
   return (
     <div className="h-screen flex">
-      <div className="h-full w-1/2 bg-gray-900 flex flex-col">
+      <div className="hidden xl:flex h-full w-1/2 bg-gray-900 flex-col">
         <div className="relative h-[65%] border-b-4 border-b-pry">
           <Image
             src="/registerImg.jpg"
@@ -94,8 +94,8 @@ const Login = () => {
         </div>
       </div>
 
-      <div className="relative h-full w-1/2 flex items-center justify-center">
-        <div className="w-[60%]">
+      <div className="relative h-full w-full xl:w-1/2 flex items-center justify-center">
+        <div className="w-[80%] md:w-[50%] lg:w-[60%]">
           <h1 className="text-[40px] leading-[1.2] font-semibold text-center">
             Welcome Back!
           </h1>

@@ -172,7 +172,7 @@ const PayrollTable = () => {
 
   return (
     <div className="w-full px-[var(--main-px)] py-[20px]">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col md:flex-row gap-3 md:gap-0 justify-between md:items-center">
         <div>
           <h1 className="font-medium text-[24px] leading-[1.2]">Payroll</h1>
           <p className="text-gray-700">

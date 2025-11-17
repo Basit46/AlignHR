@@ -28,7 +28,12 @@ const CustomEvent = ({ event }: any) => (
       color: "black",
     }}
   >
-    {event.level == "non-work" ? "Non-work day" : event.title}
+    <p className="hidden xmd:inline">
+      {event.level == "non-work" ? "Non-work day" : event.title}
+    </p>
+    <p className="xmd:hidden">
+      {event.level == "non-work" ? "Non-work day" : event.value}%
+    </p>
   </div>
 );
 
@@ -37,11 +42,12 @@ const AttendanceCalendar = () => {
 
   //GET Employees attendance record
   const { data = [] } = useQuery({
-    queryKey: ["attendance"],
+    queryKey: ["attendance-calendar"],
     queryFn: async () => {
       const res = await axiosInstance.get("/attendance");
       const record = res.data.attendanceRecords
         ? res.data.attendanceRecords.map((r: any) => ({
+            ...r,
             title: `${r?.value?.toFixed(0) || 0}% attendance`,
             start: new Date(r?.date),
             end: new Date(r?.date),
@@ -90,7 +96,7 @@ const AttendanceCalendar = () => {
   };
 
   return (
-    <div className="w-full h-[700px] bg-white rounded-xl p-4">
+    <div className="w-full h-[500px] md:h-[700px] bg-white rounded-xl p-2 md:p-4">
       <Calendar
         localizer={localizer}
         events={data}

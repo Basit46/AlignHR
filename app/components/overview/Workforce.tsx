@@ -60,39 +60,44 @@ const Workforce = () => {
         </Select>
       </div>
 
-      <div className="flex-1 w-full flex gap-3 items-end">
-        {data?.map((dept: any, i: number) => (
-          <div
-            key={i}
-            className="flex-1 h-full flex flex-col gap-2 items-center"
-          >
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <div className="flex-1 w-[60px] rounded-[28px] bg-gray-200 relative overflow-hidden group">
-                  <div
-                    style={{ height: `${dept.percentage}%` }}
-                    className="absolute left-0 bottom-0 w-full bg-gray-900 group-hover:bg-pry transition-all duration-500 ease-out"
-                  />
-                </div>
-              </TooltipTrigger>
+      <div className="flex-1 overflow-x-scroll">
+        <div className="h-full w-full flex gap-3 items-end">
+          {data?.map((dept: any, i: number) => (
+            <div
+              key={i}
+              className="relative flex-1 h-full flex flex-col gap-2 items-center"
+            >
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div className="flex-1 w-[40px] md:w-[60px] rounded-[28px] bg-gray-200 relative overflow-hidden group">
+                    <div
+                      style={{ height: `${dept.percentage}%` }}
+                      className="absolute left-0 bottom-0 w-full bg-gray-900 group-hover:bg-pry transition-all duration-500 ease-out"
+                    />
+                  </div>
+                </TooltipTrigger>
 
-              <TooltipContent>
-                <p className="text-sm">
-                  {departments.find((d) => d.value == dept.name)?.label} –{" "}
-                  {filter === "pay"
-                    ? `₦${dept.value.toLocaleString()}`
-                    : `${dept.value} member${dept.value > 1 ? "s" : ""}`}
-                </p>
-              </TooltipContent>
-            </Tooltip>
+                <TooltipContent>
+                  <p className="text-sm">
+                    {departments.find((d) => d.value == dept.name)?.label} –{" "}
+                    {filter === "pay"
+                      ? `₦${dept.value.toLocaleString()}`
+                      : `${dept.value} member${dept.value > 1 ? "s" : ""}`}
+                  </p>
+                </TooltipContent>
+              </Tooltip>
 
-            <p className="text-xs font-medium text-gray-700 text-center capitalize">
-              {dept.name.length > 7
-                ? dept.name.slice(0, 7).trim() + "..."
-                : dept.name}
-            </p>
-          </div>
-        ))}
+              <p className="hidden md:inline absolute bottom-[30px] rotate-[-90deg] md:rotate-0 md:static text-xs font-medium text-gray-700 whitespace-nowrap md:whitespace-normal text-left md:text-center capitalize">
+                {dept.name.length > 7
+                  ? dept.name.slice(0, 7).trim() + "..."
+                  : dept.name}
+              </p>
+              <p className="md:hidden absolute bottom-[60px] rotate-[-90deg] text-xs font-medium text-gray-700 whitespace-nowrap text-left capitalize">
+                {dept.name}
+              </p>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

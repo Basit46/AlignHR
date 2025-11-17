@@ -21,7 +21,7 @@ const Overview = () => {
 
   return (
     <div className="w-full px-[var(--main-px)] py-[20px]">
-      <div className="flex justify-between items-end">
+      <div className="flex flex-col md:flex-row gap-3 md:gap-0 justify-between md:items-end">
         <div>
           <h1 className="text-[40px] leading-[1.2] font-medium text-gray-900">
             Hello{fullName ? `, ${fullName}` : ""}
@@ -45,23 +45,23 @@ const Overview = () => {
         </div>
       </div>
 
-      <div className="mt-[20px] h-fit grid grid-cols-4 gap-4">
-        <div className="col-span-1 row-span-1 h-[170px] bg-white rounded-[12px]">
+      <div className="mt-[20px] h-fit grid grid-cols-2 xl:grid-cols-4 gap-4">
+        <div className="col-span-2 sm:col-span-1 row-span-1 h-[170px] bg-white rounded-[12px]">
           <EmployeeOverview />
         </div>
-        <div className="col-span-1 row-span-1 h-[170px] bg-white rounded-[12px]">
+        <div className="col-span-2 sm:col-span-1 row-span-1 h-[170px] bg-white rounded-[12px]">
           <PayrollOverview />
         </div>
-        <div className="col-span-1 row-span-2 h-[calc(170px*2+16px)] bg-white rounded-[12px]">
+        <div className="col-span-2 md:col-span-1 row-span-2 h-[calc(170px*2+16px)] bg-white rounded-[12px]">
           <ContractOverview />
         </div>
-        <div className="col-span-1 row-span-2 h-[calc(170px*2+16px)] bg-white rounded-[12px]">
+        <div className="col-span-2 md:col-span-1 row-span-2 h-[calc(170px*2+16px)] bg-white rounded-[12px]">
           <AIinsight />
         </div>
-        <div className="col-span-1 row-span-1 h-[170px] bg-white rounded-[12px]">
+        <div className="row-start-3 sm:row-start-2 xl:row-start-auto col-span-2 sm:col-span-1 row-span-1 h-[170px] bg-white rounded-[12px]">
           <LeaveOverview />
         </div>
-        <div className="col-span-1 row-span-1 h-[170px] bg-white rounded-[12px]">
+        <div className="row-start-4 sm:row-start-2 xl:row-start-auto col-span-2 sm:col-span-1 row-span-1 h-[170px] bg-white rounded-[12px]">
           <AttendanceOverview />
         </div>
         <div className="col-span-2 row-span-1 h-[calc(170px*2+16px)] bg-white rounded-[12px]">
