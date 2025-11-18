@@ -242,7 +242,7 @@ const Employees = () => {
             setValue={setSearchValue}
           />
 
-          <div className="flex gap-2">
+          <div className="hidden vsm:flex gap-2">
             <CustomSelect
               placeholder="Department"
               data={departments}

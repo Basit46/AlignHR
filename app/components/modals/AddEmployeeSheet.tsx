@@ -27,6 +27,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axiosInstance from "@/lib/axiosInstance";
 import { useRouter } from "next/navigation";
+import { useUser } from "@/lib/hooks/useUser";
 
 //ZOD SCHEMA
 const AddEmployeeSchema = z.object({
@@ -47,6 +48,7 @@ function AddEmployeeSheet() {
   const router = useRouter();
   const queryClient = useQueryClient();
   const { isAddEmployeeOpen, setIsAddEmployeeOpen } = useGlobalStore();
+  const { orgName } = useUser();
 
   const {
     register,
@@ -99,7 +101,7 @@ function AddEmployeeSheet() {
           <SheetTitle>Add new Employee</SheetTitle>
           <SheetDescription>
             Fill in the details below to add a new employee to{" "}
-            <span className="font-bold">Axios</span>
+            <span className="font-bold">{orgName}</span>
           </SheetDescription>
         </SheetHeader>
 

@@ -18,7 +18,7 @@ const CustomSearch = ({
   return (
     <div
       className={cn(
-        "relative w-[320px] h-[40px] bg-white border border-gray-200 rounded-[20px] overflow-hidden",
+        "relative w-full vsm:w-[320px] h-[40px] bg-white border border-gray-200 rounded-[20px] overflow-hidden",
         className
       )}
     >

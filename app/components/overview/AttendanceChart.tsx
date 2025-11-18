@@ -80,7 +80,7 @@ const AttendanceChart = () => {
 
   return (
     <div className="w-full h-full p-4 flex flex-col justify-between gap-4">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-0 justify-between">
         <div>
           <h1 className="text-[20px] font-medium leading-[1.2]">
             Attendance chart
@@ -149,7 +149,7 @@ const AttendanceChart = () => {
               <Tooltip key={day}>
                 <TooltipTrigger asChild>
                   <div
-                    className={`${colorClass} w-full h-[48px] rounded-[8px]`}
+                    className={`${colorClass} w-full h-[36px] sm:h-[48px] rounded-[8px]`}
                   />
                 </TooltipTrigger>
                 <TooltipContent>

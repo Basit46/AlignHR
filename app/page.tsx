@@ -23,10 +23,10 @@ const Overview = () => {
     <div className="w-full px-[var(--main-px)] py-[20px]">
       <div className="flex flex-col md:flex-row gap-3 md:gap-0 justify-between md:items-end">
         <div>
-          <h1 className="text-[40px] leading-[1.2] font-medium text-gray-900">
+          <h1 className="text-[32px] vsm:text-[40px] leading-[1.2] font-medium text-gray-900">
             Hello{fullName ? `, ${fullName}` : ""}
           </h1>
-          <p className="text-gray-600">
+          <p className="text-gray-600 text-sm">
             Ready to streamline your HR tasks and boost productivity?
           </p>
         </div>

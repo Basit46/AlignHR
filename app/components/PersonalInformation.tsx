@@ -114,7 +114,7 @@ const PersonalInformation = ({ employee }: { employee: EmployeeType }) => {
       onSubmit={handleSubmit(onSubmit)}
       className="w-full rounded-md border border-gray-300"
     >
-      <div className="flex items-center justify-between p-3 border-b border-b-gray-300">
+      <div className="flex flex-col vsm:flex-row vsm:items-center gap-2 vsm:gap-0 justify-between p-3 border-b border-b-gray-300">
         <p className="font-medium text-[18px]">General</p>
         <div className="flex gap-2 items-center">
           <Button

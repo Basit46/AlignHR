@@ -31,13 +31,13 @@ const EmployeeDetailsLayout = ({ children }: { children: React.ReactNode }) => {
             variant={"outline"}
             className="bg-transparent rounded-full size-[40px]"
           >
-            <LucideChevronLeft className="size-[28px]" />
+            <LucideChevronLeft className="size-[20px] vsm:size-[28px]" />
           </Button>
           <div>
-            <h1 className="font-medium text-[24px] leading-[1.3]">
+            <h1 className="font-medium text-[18px] vsm:text-[24px] leading-[1.3]">
               Employee Details
             </h1>
-            <p className="text-gray-700">
+            <p className="text-sm vsm:text-base text-gray-700">
               View full employee information, track activity, and manage their
               details
             </p>

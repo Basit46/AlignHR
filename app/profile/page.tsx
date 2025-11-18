@@ -67,7 +67,7 @@ const Profile = () => {
       <div
         className={`${
           isLoading ? "opacity-0" : "opacity-100 duration-300"
-        } relative z-[2] h-fit w-[450px] rounded-[16px] overflow-hidden border-[8px] border-white bg-white`}
+        } relative z-[2] h-fit w-[90%] sm:w-[450px] rounded-[16px] overflow-hidden border-[8px] border-white bg-white`}
       >
         <div className="h-[100px] w-full relative overflow-hidden rounded-b-[16px]">
           <div

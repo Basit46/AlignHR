@@ -38,10 +38,12 @@ const Workforce = () => {
   }, [filter, wf]);
 
   return (
-    <div className="w-full h-full p-4 flex flex-col justify-between gap-3">
-      <div className="flex items-center justify-between">
+    <div className="w-full h-full p-4 flex flex-col justify-between gap-4 sm:gap-3">
+      <div className="flex flex-col gap-1 sm:gap-0 sm:flex-row sm:items-center justify-between">
         <div>
-          <h1 className="text-[20px] font-medium">Understand your workforce</h1>
+          <h1 className="text-[20px] font-medium leading-[1.1] sm:leading-normal">
+            Understand your workforce
+          </h1>
           <p className="text-gray-600 text-sm">
             {filter === "members"
               ? "Team members by department"
@@ -60,7 +62,7 @@ const Workforce = () => {
         </Select>
       </div>
 
-      <div className="flex-1 overflow-x-scroll">
+      <div className="scrollbar-hide flex-1 overflow-x-scroll">
         <div className="h-full w-full flex gap-3 items-end">
           {data?.map((dept: any, i: number) => (
             <div

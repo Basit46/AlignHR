@@ -141,14 +141,14 @@ const MarkAttendance = () => {
 
   return (
     <div className="mt-6">
-      <div className="mb-4 flex items-center justify-between gap-3">
+      <div className="mb-4 flex flex-col vsm:flex-row items-center justify-between gap-3">
         <CustomSearch
           placeholder="Search employee"
           value={searchValue}
           setValue={setSearchValue}
         />
 
-        <div className="flex items-center gap-3">
+        <div className="w-full vsm:w-fit flex items-center gap-3">
           <Button onClick={() => refetchEmployees()} variant="outline">
             Reset
           </Button>
