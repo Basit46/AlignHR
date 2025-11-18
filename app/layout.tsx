@@ -57,7 +57,9 @@ export default function RootLayout({
           content="https://opengraph.b-cdn.net/production/images/25a1c410-957f-4d4f-8ad5-b638f2c9a12d.png"
         />
       </Head>
-      <body className={`${inter.variable} min-h-screen bg-pry/10`}>
+      <body
+        className={`${inter.variable} min-h-[100dvh] max-w-[2300px] mx-auto bg-pry/10`}
+      >
         <RootLayoutContent>{children}</RootLayoutContent>
         <Toaster
           position="top-center"
