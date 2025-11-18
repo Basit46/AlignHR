@@ -40,7 +40,7 @@ export default function RootLayout({
         />
         <meta
           property="og:image"
-          content="https://opengraph.b-cdn.net/production/images/25a1c410-957f-4d4f-8ad5-b638f2c9a12d.png"
+          content="https://opengraph.b-cdn.net/production/images/25a1c410-957f-4d4f-8ad5-b638f2c9a12d.png?token=moEykyaLjx6dttL2dHAf7U4qLEuNul6OH5aVajVDse8&height=584&width=1200&expires=33299459070"
         />
 
         {/* Twitter */}
@@ -54,7 +54,7 @@ export default function RootLayout({
         />
         <meta
           name="twitter:image"
-          content="https://opengraph.b-cdn.net/production/images/25a1c410-957f-4d4f-8ad5-b638f2c9a12d.png"
+          content="https://opengraph.b-cdn.net/production/images/25a1c410-957f-4d4f-8ad5-b638f2c9a12d.png?token=moEykyaLjx6dttL2dHAf7U4qLEuNul6OH5aVajVDse8&height=584&width=1200&expires=33299459070"
         />
       </Head>
       <body
