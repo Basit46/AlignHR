@@ -74,7 +74,7 @@ export default function RootLayout({
         className={`${inter.variable} min-h-[100dvh] max-w-[2300px] mx-auto bg-pry/10`}
       >
         <RootLayoutContent>{children}</RootLayoutContent>
-        {/* <EquallyWidget /> */}
+        <EquallyWidget />
         <Toaster
           position="top-center"
           toastOptions={{
