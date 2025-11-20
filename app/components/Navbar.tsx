@@ -76,7 +76,7 @@ const Navbar = () => {
           <Image src="/avatar.jpg" fill alt="avatar" className="object-cover" />
         </div>
         <Popover>
-          <PopoverTrigger>
+          <PopoverTrigger asChild>
             <button className="md:hidden">
               <LucideMenu className="text-pry" />
             </button>
